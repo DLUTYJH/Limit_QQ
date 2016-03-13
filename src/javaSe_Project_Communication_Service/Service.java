@@ -2,15 +2,20 @@ package javaSe_Project_Communication_Service;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import javaSe_Project_Communication_Util.StringUtil;
 
 public class Service extends JFrame {
 
@@ -54,6 +59,14 @@ public class Service extends JFrame {
 		jTextField = new JTextField(10);
 
 		jButton = new JButton("启动服务器");
+		jButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Service.this.execute();
+			}
+		});
 
 		jTextArea = new JTextArea();
 
@@ -85,6 +98,28 @@ public class Service extends JFrame {
 		this.setLocation(500, 150);
 		this.pack();
 		this.setVisible(true);
+	}
+
+	private void execute() {
+		String hostPort = this.jTextField.getText();
+		if (StringUtil.isEmpty(hostPort)) {
+			JOptionPane.showMessageDialog(this, "端口号不能为空!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField.requestFocus();
+			return;
+		}
+		if (!StringUtil.isNumber(hostPort)) {
+			JOptionPane.showMessageDialog(this, "端口号只能为数字!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField.setText("");
+			this.jTextField.requestFocus();
+			return;
+		}
+		if (!StringUtil.isPortCrrect(hostPort)) {
+			JOptionPane.showMessageDialog(this, "端口号范围不正确!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField.setText("");
+			this.jTextField.requestFocus();
+			return;
+		}
+		
 	}
 
 	public static void main(String[] args) {
