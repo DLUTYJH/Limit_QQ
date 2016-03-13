@@ -114,7 +114,7 @@ public class Service extends JFrame {
 			return;
 		}
 		if (!StringUtil.isPortCrrect(hostPort)) {
-			JOptionPane.showMessageDialog(this, "端口号范围不正确!", "警告", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "端口号范围为1024-65535!", "警告", JOptionPane.WARNING_MESSAGE);
 			this.jTextField.setText("");
 			this.jTextField.requestFocus();
 			return;

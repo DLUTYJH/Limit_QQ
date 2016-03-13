@@ -2,13 +2,18 @@ package javaSe_Project_Communication_Cilent;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import javaSe_Project_Communication_Util.StringUtil;
 
 public class Login extends JFrame {
 
@@ -27,8 +32,11 @@ public class Login extends JFrame {
 	private JButton jButton1;
 	private JButton jButton2;
 
+	private Client client;
+
 	public Login() {
 		super("用户登陆");
+		this.client = new Client("聊天室");
 		init();
 	}
 
@@ -67,10 +75,75 @@ public class Login extends JFrame {
 		this.pack();
 		this.setResizable(false);
 		this.setVisible(true);
+
+		jButton1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Login.this.execute();
+			}
+		});
+
+		jButton2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Login.this.clear();
+			}
+		});
+	}
+
+	private void clear() {
+		jTextField1.setText("");
+		jTextField2.setText("");
+		jTextField3.setText("");
+		jTextField1.requestFocus();
+	}
+
+	private void execute() {
+		String useName = this.jTextField1.getText();
+		String hostAddress = this.jTextField2.getText();
+		String port = this.jTextField3.getText();
+
+		// 用户名的判断
+		if (StringUtil.isEmpty(useName)) {
+			JOptionPane.showMessageDialog(this, "用户名不能为空!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField1.requestFocus();
+			return;
+		}
+
+		// 服务器地址的判断
+		if (StringUtil.isEmpty(hostAddress)) {
+			JOptionPane.showMessageDialog(this, "服务器地址不能为空!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField2.requestFocus();
+			return;
+		}
+
+		// 端口号的判断
+		if (StringUtil.isEmpty(port)) {
+			JOptionPane.showMessageDialog(this, "端口号不能为空!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField3.requestFocus();
+			return;
+		}
+		if (!StringUtil.isNumber(port)) {
+			JOptionPane.showMessageDialog(this, "端口号只能为数字!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField3.setText("");
+			this.jTextField3.requestFocus();
+			return;
+		}
+		if (!StringUtil.isPortCrrect(port)) {
+			JOptionPane.showMessageDialog(this, "端口号范围为1024-65535!", "警告", JOptionPane.WARNING_MESSAGE);
+			this.jTextField3.setText("");
+			this.jTextField3.requestFocus();
+			return;
+		}
+
+		this.client.init();
+
 	}
 
 	public static void main(String[] args) {
-		 //new Login();
-		new Client("聊天室").init();
+		new Login();
+		// new Client("聊天室").init();
 	}
 }
