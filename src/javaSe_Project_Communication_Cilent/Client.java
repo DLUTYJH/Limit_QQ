@@ -1,6 +1,7 @@
 package javaSe_Project_Communication_Cilent;
 
 import java.awt.BorderLayout;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,7 +33,9 @@ public class Client extends JFrame {
 	public void init() {
 
 		jTextArea1 = new JTextArea(20, 30);
+		jTextArea1.setEditable(false);
 		jTextArea2 = new JTextArea(24, 10);
+		jTextArea2.setEditable(false);
 
 		jTextField = new JTextField(20);
 
@@ -61,5 +64,18 @@ public class Client extends JFrame {
 		this.pack();
 		this.setResizable(false);
 		this.setVisible(true);
+	}
+
+	public void setUseList(String str) {
+		String temp = "";
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) != '@') {
+				temp += str.charAt(i);
+			} else {
+				jTextArea2.setText(temp + "\n");
+				temp = "";
+			}
+		}
+
 	}
 }

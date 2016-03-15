@@ -1,5 +1,8 @@
 package javaSe_Project_Communication_Util;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * 方法类: 字符串的处理
  * 
@@ -7,7 +10,15 @@ package javaSe_Project_Communication_Util;
  *
  */
 
-public interface StringUtil {
+public class StringUtil {
+	
+	public static final String ERROR = "ERROR" ;
+	public static final String SUCCESSFUL = "SUCCESS" ;
+	
+	public static String SERVICE_HOST ;
+	public static int SERVICE_PORT ;
+	public static String CLIENT_NAME ;
+	
 
 	/**
 	 * 判断字符串是否为空,如果为空返回true
@@ -50,5 +61,37 @@ public interface StringUtil {
 		}
 		return true;
 	}
+	
+	/**
+	 * 产生随机的端口号
+	 * @return
+	 */
+	public static int generatePort(){
+		return (int)(Math.random()*50000 + 1025);
+	}
 
+	/**
+	 * 判断服务器上的用户名时候重复,有重复返回true
+	 * @param map
+	 * @param username
+	 * @return
+	 */
+	public static boolean isUsernameDuplicated(Map<String,Integer> map ,String username){
+		Iterator<String> i = map.keySet().iterator();
+		while (i.hasNext()) {
+			if (username.equals((String)i.next())) {
+				return true ;
+			}
+		}
+		return false;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }

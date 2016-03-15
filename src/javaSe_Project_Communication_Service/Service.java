@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -41,6 +44,20 @@ public class Service extends JFrame {
 
 	// 滚动条
 	private JScrollPane jsPane;
+
+	private Map<String, Integer> map = new HashMap<String, Integer>();
+
+	public Map<String, Integer> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<String, Integer> map) {
+		this.map = map;
+	}
+
+	public JLabel getjLabel1() {
+		return jLabel1;
+	}
 
 	public Service(String name) {
 		super(name);
@@ -119,7 +136,20 @@ public class Service extends JFrame {
 			this.jTextField.requestFocus();
 			return;
 		}
-		
+
+		new ConnectThread(this, Integer.parseInt(hostPort)).start();
+		jLabel1.setText("服务器启动");
+	}
+
+	// 更新用户在线列表
+	public void setUseList() {
+		this.jTextArea.setText("");
+		for (Iterator<String> i = map.keySet().iterator(); i.hasNext();) {
+			String username = (String) i.next();
+			this.jTextArea.setText(username + "\n");
+
+		}
+
 	}
 
 	public static void main(String[] args) {

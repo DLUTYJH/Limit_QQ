@@ -32,11 +32,9 @@ public class Login extends JFrame {
 	private JButton jButton1;
 	private JButton jButton2;
 
-	private Client client;
 
 	public Login() {
 		super("用户登陆");
-		this.client = new Client("聊天室");
 		init();
 	}
 
@@ -101,12 +99,12 @@ public class Login extends JFrame {
 	}
 
 	private void execute() {
-		String useName = this.jTextField1.getText();
+		String userName = this.jTextField1.getText();
 		String hostAddress = this.jTextField2.getText();
 		String port = this.jTextField3.getText();
 
 		// 用户名的判断
-		if (StringUtil.isEmpty(useName)) {
+		if (StringUtil.isEmpty(userName)) {
 			JOptionPane.showMessageDialog(this, "用户名不能为空!", "警告", JOptionPane.WARNING_MESSAGE);
 			this.jTextField1.requestFocus();
 			return;
@@ -137,13 +135,16 @@ public class Login extends JFrame {
 			this.jTextField3.requestFocus();
 			return;
 		}
-
-		this.client.init();
-
+		
+		StringUtil.SERVICE_PORT = Integer.parseInt(port) ;
+		StringUtil.SERVICE_HOST = hostAddress ;
+		StringUtil.CLIENT_NAME = userName ;
+		
+		new ClientConnectionThread(this,hostAddress,Integer.parseInt(port),userName).start();
+		
 	}
 
 	public static void main(String[] args) {
 		new Login();
-		// new Client("聊天室").init();
 	}
 }

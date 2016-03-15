@@ -5,9 +5,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
+import javaSe_Project_Communication_Util.StringUtil;
 
 /**
  * 
@@ -35,48 +38,53 @@ public class ConnectThread extends Thread {
 		}
 
 	}
-	
+
 	@Override
 	public void run() {
-		
+
 		while (true) {
-			
+
 			try {
-				socket = serverSocket.accept() ;
-				in = socket.getInputStream() ;
-				out = socket.getOutputStream() ;
-				
-				byte[] data = new byte[1024] ;
-				int len = in.read(data) ;
-				
-				String infoFromClient = new String(data,0,len) ;
-				
-				
-				
-				
-				
-				
+				socket = serverSocket.accept();
+				in = socket.getInputStream();
+				out = socket.getOutputStream();
+
+				byte[] data = new byte[1024];
+				int len = in.read(data);
+
+				String infoFromClient = new String(data, 0, len);
+
+				// 解析从客户端收到的信息
+				int index = infoFromClient.lastIndexOf("@@@");
+				String username = infoFromClient.substring(0, index);
+				int lastindex = infoFromClient.lastIndexOf("@");
+				String clientport = infoFromClient.substring(lastindex + 1);
+
+				Service service = (Service) jFrame;
+				Map<String, Integer> map = service.getMap();
+
+				if (StringUtil.isUsernameDuplicated(map, username)) {
+					out.write(StringUtil.ERROR.getBytes());
+					in.close();
+					out.close();
+					socket.close();
+				} else {
+					map.put(username, Integer.parseInt(clientport));
+					service.setUseList();
+					String info = "";
+					for (Iterator<String> i = map.keySet().iterator(); i.hasNext();) {
+						info = (String) i.next() + "@";
+					}
+					out.write(info.getBytes());
+
+				}
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			
-			
-			
-			
-			
+
 		}
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
