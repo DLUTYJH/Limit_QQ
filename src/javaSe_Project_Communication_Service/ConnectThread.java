@@ -55,11 +55,17 @@ public class ConnectThread extends Thread {
 				String infoFromClient = new String(data, 0, len);
 
 				// 解析从客户端收到的信息
-				int index = infoFromClient.lastIndexOf("@@@");
-				String username = infoFromClient.substring(0, index);
-				int lastindex = infoFromClient.lastIndexOf("@");
-				String clientport = infoFromClient.substring(lastindex + 1);
+				int index1 = infoFromClient.lastIndexOf("@");
+				String username = infoFromClient.substring(0, index1);
+				int index2 = infoFromClient.lastIndexOf("*");
+				String clientport1 = infoFromClient.substring(index1+1,index2);
+				int index3 = infoFromClient.lastIndexOf("#");
+				String clientport2 = infoFromClient.substring(index2+1,index3);
+				String clientAddress = infoFromClient.substring(index3+1);
+				
 
+				
+				
 				Service service = (Service) jFrame;
 				Map<String, Integer> map = service.getMap();
 
@@ -69,7 +75,10 @@ public class ConnectThread extends Thread {
 					out.close();
 					socket.close();
 				} else {
-					map.put(username, Integer.parseInt(clientport));
+					
+					
+					
+					map.put(username, Integer.parseInt(clientport1));
 					service.setUseList();
 					String info = "";
 					for (Iterator<String> i = map.keySet().iterator(); i.hasNext();) {

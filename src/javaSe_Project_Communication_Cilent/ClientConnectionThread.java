@@ -44,10 +44,12 @@ public class ClientConnectionThread extends Thread {
 
 			// 构造客户端向服务器发送的消息内容
 			InetAddress address = InetAddress.getLocalHost();
-			String clientAddress = address.toString();
+			String clientAddress = address.toString();//XHPC/127.0.1.1
 			int l = clientAddress.indexOf("/");
 			clientAddress = clientAddress.substring(l + 1);
-			String info = username + "@@@" + randomPort1;
+			
+			//以固定的这种格式向服务器发送消息
+			String info = username + "@" + randomPort1+"*"+randomPort2+"#"+clientAddress ;
 
 			// 向服务器发送信息
 			out.write(info.getBytes());
@@ -55,6 +57,7 @@ public class ClientConnectionThread extends Thread {
 			client.init();
 			frame.setVisible(false);
 
+			//从服务器接收消息
 			byte[] data = new byte[104];
 			int len = in.read(data);
 			String str = new String(data, 0, len);
